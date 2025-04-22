@@ -1,13 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { pauseTimer, resumeTimer, resetTimer, removeTimer } from "../features/timers/TimerSlice";
+import { 
+  pauseTimer, 
+  resumeTimer, 
+  resetTimer, 
+  removeTimer, 
+  restartTimer, 
+  renameTimer,
+  setTimerCategory
+} from "../features/timers/TimerSlice";
 import { formatTime } from "../utils/formatTime";
 import "./TimerCard.css";
+
+// Available categories
+const CATEGORIES = ["General", "Work", "Study", "Break", "Exercise", "Personal"];
 
 const TimerCard = ({ timer }) => {
   const dispatch = useDispatch();
   const [displayTime, setDisplayTime] = useState(timer.elapsed);
   const [updateInterval, setUpdateInterval] = useState(1000); // Default: update every second
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedLabel, setEditedLabel] = useState(timer.label);
 
   // Set up interval for real-time updates
   useEffect(() => {
@@ -31,10 +44,46 @@ const TimerCard = ({ timer }) => {
     };
   }, [timer.isRunning, timer.startTime, timer.elapsed, updateInterval]);
 
+  // Update editedLabel when timer.label changes (from Redux)
+  useEffect(() => {
+    setEditedLabel(timer.label);
+  }, [timer.label]);
+
   const handlePause = () => dispatch(pauseTimer(timer.id));
   const handleResume = () => dispatch(resumeTimer(timer.id));
   const handleReset = () => dispatch(resetTimer(timer.id));
+  const handleRestart = () => dispatch(restartTimer(timer.id));
   const handleDelete = () => dispatch(removeTimer(timer.id));
+
+  const handleLabelClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleLabelChange = (e) => {
+    setEditedLabel(e.target.value);
+  };
+
+  const handleLabelSubmit = () => {
+    if (editedLabel.trim() !== '') {
+      dispatch(renameTimer({ id: timer.id, newLabel: editedLabel }));
+    } else {
+      setEditedLabel(timer.label); // Reset to original if empty
+    }
+    setIsEditing(false);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleLabelSubmit();
+    } else if (e.key === 'Escape') {
+      setEditedLabel(timer.label); // Reset to original
+      setIsEditing(false);
+    }
+  };
+
+  const handleCategoryChange = (e) => {
+    dispatch(setTimerCategory({ id: timer.id, category: e.target.value }));
+  };
 
   // Toggle update interval (stretch challenge)
   const toggleUpdateSpeed = () => {
@@ -50,7 +99,23 @@ const TimerCard = ({ timer }) => {
   return (
     <div className={`timer-card ${timer.isRunning ? 'running' : 'paused'} ${isLongRunning ? 'long-running' : ''} ${isOverHour ? 'over-hour' : ''}`}>
       <div className="timer-card-header" style={{ borderColor: timer.color }}>
-        <h3>{timer.label}</h3>
+        {isEditing ? (
+          <div className="label-edit">
+            <input
+              type="text"
+              value={editedLabel}
+              onChange={handleLabelChange}
+              onBlur={handleLabelSubmit}
+              onKeyDown={handleKeyDown}
+              autoFocus
+              className="label-input"
+            />
+          </div>
+        ) : (
+          <h3 onDoubleClick={handleLabelClick} className="editable-label" title="Double-click to edit">
+            {timer.label}
+          </h3>
+        )}
         <div className="timer-actions">
           <button 
             className="speed-toggle" 
@@ -70,14 +135,28 @@ const TimerCard = ({ timer }) => {
       </div>
       
       <div className="timer-body">
+        <div className="timer-category">
+          <select 
+            value={timer.category} 
+            onChange={handleCategoryChange}
+            className="category-select"
+          >
+            {CATEGORIES.map(category => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
+        
         <div 
           className="time-display" 
-          title={`Raw time: ${displayTime}ms`} // Tooltip showing raw milliseconds (stretch challenge)
+          title={`Raw time: ${displayTime}ms`}
         >
           {formatTime(displayTime, { 
             showHours: true,
             showMilliseconds: false,
-            locale: navigator.language // Use browser's locale for internationalization (stretch challenge)
+            locale: navigator.language
           })}
         </div>
         <div className="status-indicator">
@@ -109,6 +188,13 @@ const TimerCard = ({ timer }) => {
             onClick={handleReset}
           >
             Reset
+          </button>
+          <button 
+            className="control-btn restart" 
+            onClick={handleRestart}
+            title="Restart timer from zero"
+          >
+            Restart
           </button>
         </div>
       </div>

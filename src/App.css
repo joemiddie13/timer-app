@@ -257,6 +257,14 @@ body.dark-mode button.danger:hover {
   background-color: #7f8c8d;
 }
 
+.timer-controls .control-btn.restart {
+  background-color: #3498db;
+}
+
+.timer-controls .control-btn.restart:hover {
+  background-color: #2980b9;
+}
+
 /* Dark mode button styles for timer controls */
 body.dark-mode .timer-controls .control-btn.pause {
   background-color: #f39c12;
@@ -280,6 +288,14 @@ body.dark-mode .timer-controls .control-btn.reset {
 
 body.dark-mode .timer-controls .control-btn.reset:hover {
   background-color: #4a5568;
+}
+
+body.dark-mode .timer-controls .control-btn.restart {
+  background-color: #4299e1;
+}
+
+body.dark-mode .timer-controls .control-btn.restart:hover {
+  background-color: #3182ce;
 }
 
 /* Dark mode styles for timer settings */
@@ -346,4 +362,133 @@ body.dark-mode .import-btn:hover {
 .theme-toggle:hover {
   transform: scale(1.1);
   background-color: #3182ce;
+}
+
+/* Editable label styling */
+.editable-label {
+  cursor: pointer;
+  position: relative;
+}
+
+.editable-label:hover::after {
+  content: "✏️";
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+  opacity: 0.6;
+}
+
+.label-edit {
+  flex: 1;
+}
+
+.label-input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1.17em;
+  font-weight: bold;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: -0.5rem 0;
+}
+
+body.dark-mode .label-input {
+  background-color: #4a5568;
+  color: #e2e8f0;
+  border-color: #718096;
+}
+
+/* Category styling */
+.timer-category {
+  margin-bottom: 0.5rem;
+}
+
+.category-select {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  color: #555;
+}
+
+.category-select option {
+  padding: 0.25rem;
+}
+
+body.dark-mode .category-select {
+  background-color: #4a5568;
+  color: #e2e8f0;
+  border-color: #718096;
+}
+
+body.dark-mode .category-select option {
+  background-color: #2d3748;
+}
+
+/* Category filter styling */
+.category-filter {
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+}
+
+.category-filter label {
+  margin-right: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.category-filter-select {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  color: #555;
+}
+
+.category-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  background-color: #e9f3ff;
+  color: #3182ce;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.category-badge:hover {
+  background-color: #dbeafe;
+}
+
+/* Dark mode styles for category elements */
+body.dark-mode .category-filter label {
+  color: #a0aec0;
+}
+
+body.dark-mode .category-filter-select {
+  background-color: #4a5568;
+  color: #e2e8f0;
+  border-color: #718096;
+}
+
+body.dark-mode .category-filter-select option {
+  background-color: #2d3748;
+}
+
+body.dark-mode .category-badge {
+  background-color: #2d3748;
+  color: #90cdf4;
+}
+
+body.dark-mode .category-badge:hover {
+  background-color: #3a4a63;
 }

@@ -60,9 +60,14 @@ const TimerSettings = ({ store }) => {
         return;
       }
       
+      // Ensure all timers have valid categories before importing
+      const sanitizedTimers = data.timers.map(timer => ({
+        ...timer,
+        category: timer.category || "General"
+      }));
+      
       // Dispatch an action to replace state with imported data
-      // Note: We'd need to create this action in the TimerSlice
-      dispatch({ type: 'timers/importTimers', payload: data.timers });
+      dispatch({ type: 'timers/importTimers', payload: sanitizedTimers });
       
       // Show success message
       alert('Timers imported successfully!');

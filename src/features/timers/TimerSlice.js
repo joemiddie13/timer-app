@@ -30,6 +30,28 @@ const timersSlice = createSlice({
         timer.isRunning = false;
       }
     },
+    restartTimer: (state, action) => {
+      const timer = state.find(t => t.id === action.payload);
+      if (timer) {
+        timer.elapsed = 0;
+        timer.startTime = Date.now();
+        timer.isRunning = true;
+      }
+    },
+    renameTimer: (state, action) => {
+      const { id, newLabel } = action.payload;
+      const timer = state.find(t => t.id === id);
+      if (timer) {
+        timer.label = newLabel;
+      }
+    },
+    setTimerCategory: (state, action) => {
+      const { id, category } = action.payload;
+      const timer = state.find(t => t.id === id);
+      if (timer) {
+        timer.category = category;
+      }
+    },
     removeTimer: (state, action) => {
       return state.filter(timer => timer.id !== action.payload);
     },
@@ -65,6 +87,9 @@ export const {
   pauseTimer, 
   resumeTimer, 
   resetTimer, 
+  restartTimer,
+  renameTimer,
+  setTimerCategory,
   removeTimer,
   sortTimers,
   importTimers,
