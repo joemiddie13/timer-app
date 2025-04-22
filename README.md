@@ -2,7 +2,8 @@
 
 A sleek, responsive timer application built with React and Redux that allows you to track and manage multiple timers simultaneously.
 
-![Timer App Screenshot](https://i.imgur.com/placeholder-image.jpg)
+![Timer App Screenshot](<img width="1276" alt="image" src="https://github.com/user-attachments/assets/ebeb597f-4808-493f-8fc6-a364efc7e990" />
+)
 
 ## Features
 
