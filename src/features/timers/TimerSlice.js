@@ -43,6 +43,20 @@ const timersSlice = createSlice({
         return b.elapsed - a.elapsed;
       });
     },
+    importTimers: (state, action) => {
+      return action.payload;
+    },
+    updateRunningTimers: (state) => {
+      const now = Date.now();
+      state.forEach(timer => {
+        if (timer.isRunning) {
+          if (now - timer.startTime > 5000) {
+            timer.elapsed += 1000;
+            timer.startTime = now;
+          }
+        }
+      });
+    }
   },
 });
 
@@ -52,7 +66,9 @@ export const {
   resumeTimer, 
   resetTimer, 
   removeTimer,
-  sortTimers 
+  sortTimers,
+  importTimers,
+  updateRunningTimers
 } = timersSlice.actions;
 
 export default timersSlice.reducer;
