@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addTimer } from "../features/timers/TimerSlice";
 import TimerCard from "./TimerCard";
@@ -7,6 +7,7 @@ import "./TimerBoard.css";
 function TimerBoard() {
   const timers = useSelector((state) => state.timers);
   const dispatch = useDispatch();
+  const [totalElapsedTime, setTotalElapsedTime] = useState(0);
 
   const handleAddTimer = () => {
     const label = prompt("Enter a timer label:") || "New Timer";
@@ -17,12 +18,33 @@ function TimerBoard() {
   const totalTimers = timers.length;
   const runningTimers = timers.filter(t => t.isRunning).length;
   
-  // Calculate total elapsed time across all timers
-  const totalElapsedTime = useMemo(() => {
-    return timers.reduce((total, timer) => {
+  // Use effect to update the total elapsed time in real-time
+  useEffect(() => {
+    // Calculate initial total of elapsed time
+    let initialTotal = timers.reduce((total, timer) => {
       return total + timer.elapsed;
     }, 0);
-  }, [timers]);
+    
+    setTotalElapsedTime(initialTotal);
+    
+    // Set up interval to update total time for running timers
+    const intervalId = setInterval(() => {
+      const now = Date.now();
+      const total = timers.reduce((sum, timer) => {
+        if (timer.isRunning) {
+          // For running timers, add elapsed time plus time since timer started
+          return sum + timer.elapsed + (now - timer.startTime);
+        }
+        // For paused timers, just add the elapsed time
+        return sum + timer.elapsed;
+      }, 0);
+      
+      setTotalElapsedTime(total);
+    }, 1000);
+    
+    // Clean up interval on unmount
+    return () => clearInterval(intervalId);
+  }, [timers]); // Re-run when timers array changes
   
   // Format total elapsed time
   const formatTotalTime = (ms) => {
