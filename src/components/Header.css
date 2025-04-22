@@ -1,18 +1,55 @@
 .app-header {
-  background-color: #2c3e50;
-  color: white;
-  padding: 1rem;
+  background-color: white;
+  padding: 1.5rem 0;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow);
+  border-bottom: 1px solid var(--gray-100);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+  background-color: rgba(255, 255, 255, 0.95);
 }
 
 .app-header h1 {
   margin: 0;
-  font-size: 2rem;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  letter-spacing: -0.025em;
 }
 
 .app-header p {
   margin: 0.5rem 0 0;
   font-size: 1rem;
-  opacity: 0.8;
+  color: var(--gray-500);
+  font-weight: 400;
+}
+
+/* Logo styling */
+.app-header h1::before {
+  content: "⏱️";
+  display: inline-block;
+  margin-right: 0.5rem;
+  font-size: 1.5rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Dark mode adjustments */
+body.dark-mode .app-header {
+  background-color: rgba(15, 23, 42, 0.95);
+  border-color: #334155;
+}
+
+body.dark-mode .app-header h1 {
+  color: #f8fafc;
+}
+
+body.dark-mode .app-header p {
+  color: #94a3b8;
 } 

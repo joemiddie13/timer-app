@@ -1,34 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const ThemeToggle = () => {
-  // Check if user has a preference saved in localStorage
-  const [darkMode, setDarkMode] = useState(() => {
-    const savedMode = localStorage.getItem('darkMode');
-    return savedMode === 'true';
-  });
-
-  // Apply dark mode to the body when component mounts or darkMode changes
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  
+  // Check user's system preference on mount
   useEffect(() => {
-    if (darkMode) {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    // Check for saved preference, otherwise use system preference
+    const savedTheme = localStorage.getItem('theme');
+    const initialDarkMode = savedTheme ? savedTheme === 'dark' : prefersDark;
+    
+    setIsDarkMode(initialDarkMode);
+    applyTheme(initialDarkMode);
+  }, []);
+  
+  const applyTheme = (dark) => {
+    if (dark) {
       document.body.classList.add('dark-mode');
     } else {
       document.body.classList.remove('dark-mode');
     }
-    // Save preference to localStorage
-    localStorage.setItem('darkMode', darkMode);
-  }, [darkMode]);
-
-  const toggleTheme = () => {
-    setDarkMode(!darkMode);
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
   };
-
+  
+  const toggleTheme = () => {
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    applyTheme(newDarkMode);
+  };
+  
   return (
     <button 
       className="theme-toggle" 
-      onClick={toggleTheme} 
-      title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+      onClick={toggleTheme}
+      title={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
+      aria-label={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
     >
-      {darkMode ? "☀️" : "🌙"}
+      {isDarkMode ? '☀️' : '🌙'}
     </button>
   );
 };

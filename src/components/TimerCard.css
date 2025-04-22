@@ -1,47 +1,30 @@
 .timer-card {
   background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
   margin-bottom: 1rem;
   overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s, border-left-color 0.3s;
+  transition: all 0.2s ease;
+  border: 1px solid var(--gray-100);
+  position: relative;
 }
 
 .timer-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-md);
 }
 
 .timer-card.running {
-  border-left: 4px solid #10b981;
+  border-left: 4px solid var(--success-color);
 }
 
 .timer-card.paused {
-  border-left: 4px solid #6b7280;
+  border-left: 4px solid var(--gray-400);
 }
 
-/* Highlight long-running timers (stretch challenge) */
+/* Highlight long-running timers */
 .timer-card.long-running {
-  border-left: 4px solid #f97316; /* Orange color for long-running */
-  animation: pulse 2s infinite alternate;
-}
-
-/* Highlight timers that are over an hour (stretch challenge for Part 7) */
-.timer-card.over-hour {
-  background-color: #eff6ff; /* Light blue background */
-}
-
-.timer-card.over-hour .time-display {
-  color: #3b82f6; /* Blue text for emphasis */
-  font-weight: 800;
-  text-shadow: 0px 0px 1px rgba(59, 130, 246, 0.2);
-}
-
-.over-hour-indicator {
-  display: inline-block;
-  color: #3b82f6;
-  font-weight: 500;
-  margin-left: 4px;
+  border-left: 4px solid var(--warning-color);
 }
 
 @keyframes pulse {
@@ -53,111 +36,174 @@
   }
 }
 
+/* Highlight timers that are over an hour */
+.timer-card.over-hour {
+  background-color: #f0f9ff;
+}
+
+.timer-card.over-hour .time-display {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.over-hour-indicator {
+  display: inline-block;
+  color: var(--primary-color);
+  font-weight: 500;
+  margin-left: 4px;
+  font-size: 0.75rem;
+}
+
 .timer-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  border-bottom: 1px solid #f1f5f9;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--gray-100);
 }
 
 .timer-card-header h3 {
   margin: 0;
-  font-size: 1.25rem;
-  color: #1e293b;
+  font-size: 1.125rem;
+  color: var(--gray-900);
   font-weight: 600;
 }
 
 .timer-body {
-  padding: 1.5rem;
+  padding: 1.25rem;
 }
 
 .time-display {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--gray-900);
   text-align: center;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
   margin-bottom: 0.5rem;
-  cursor: help; /* Indicate that there's a tooltip */
+  cursor: help;
+  line-height: 1.1;
 }
 
 .status-indicator {
   text-align: center;
   font-size: 0.875rem;
-  color: #64748b;
-  margin-bottom: 1.5rem;
+  color: var(--gray-500);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .timer-card.running .status-indicator {
-  color: #10b981;
+  color: var(--success-color);
 }
 
 .timer-card.paused .status-indicator {
-  color: #6b7280;
+  color: var(--gray-500);
+}
+
+.status-indicator::before {
+  content: "";
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: currentColor;
 }
 
 .long-running-indicator {
-  display: inline-block;
-  color: #f97316;
+  display: inline-flex;
+  align-items: center;
+  color: var(--warning-color);
   font-weight: 500;
+  font-size: 0.75rem;
+  gap: 0.25rem;
 }
 
 .timer-notes {
-  background-color: #f8fafc;
-  border-radius: 6px;
-  padding: 0.75rem;
-  margin-bottom: 1.5rem;
+  background-color: var(--gray-50);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
   font-size: 0.875rem;
-  color: #64748b;
+  color: var(--gray-600);
   font-style: italic;
+  position: relative;
+}
+
+.timer-notes::before {
+  content: "💬";
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  font-size: 0.875rem;
+  opacity: 0.5;
 }
 
 .timer-controls {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .control-btn {
   flex: 1;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--radius);
+  font-weight: 500;
   font-size: 0.875rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.control-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.control-btn:active {
+  transform: translateY(0);
 }
 
 .control-btn.pause {
-  background-color: #f59e0b;
+  background-color: var(--warning-color);
   color: white;
 }
 
 .control-btn.pause:hover {
-  background-color: #d97706;
+  background-color: var(--warning-dark);
 }
 
 .control-btn.resume {
-  background-color: #10b981;
+  background-color: var(--success-color);
   color: white;
 }
 
 .control-btn.resume:hover {
-  background-color: #059669;
+  background-color: var(--success-dark);
 }
 
 .control-btn.reset {
-  background-color: #6b7280;
+  background-color: var(--gray-500);
   color: white;
 }
 
 .control-btn.reset:hover {
-  background-color: #4b5563;
+  background-color: var(--gray-600);
+}
+
+.control-btn.restart {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.control-btn.restart:hover {
+  background-color: var(--primary-dark);
 }
 
 .timer-actions {
@@ -165,38 +211,57 @@
   gap: 0.5rem;
 }
 
-/* Styles for the speed toggle button */
-.speed-toggle {
-  font-size: 0.875rem;
-  background-color: #e2e8f0;
-  color: #475569;
-  border: none;
-  border-radius: 4px;
-  padding: 0.25rem 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.speed-toggle:hover {
-  background-color: #cbd5e1;
-}
-
 .delete-btn {
   background: none;
   border: none;
-  color: #ef4444;
+  color: var(--danger-color);
   font-size: 1.25rem;
-  font-weight: bold;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
 }
 
 .delete-btn:hover {
   background-color: rgba(239, 68, 68, 0.1);
+}
+
+/* Dark mode adjustments */
+body.dark-mode .timer-card {
+  background-color: #1e293b;
+  border-color: #1e293b;
+}
+
+body.dark-mode .timer-card-header {
+  border-bottom-color: #334155;
+}
+
+body.dark-mode .timer-card-header h3 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .time-display {
+  color: #f1f5f9;
+}
+
+body.dark-mode .status-indicator {
+  color: #94a3b8;
+}
+
+body.dark-mode .timer-notes {
+  background-color: #0f172a;
+  color: #cbd5e1;
+}
+
+body.dark-mode .timer-card.over-hour {
+  background-color: #0f172a;
+}
+
+body.dark-mode .timer-card.over-hour .time-display,
+body.dark-mode .over-hour-indicator {
+  color: #60a5fa;
 } 
