@@ -5,6 +5,7 @@ import { updateRunningTimers } from './features/timers/TimerSlice';
 import Header from './components/Header';
 import TimerBoard from './components/TimerBoard';
 import TimerSettings from './components/TimerSettings';
+import ThemeToggle from './components/ThemeToggle';
 import { store } from './app/store';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <TimerSettings store={store} />
         <TimerBoard />
       </main>
+      <ThemeToggle />
     </div>
   );
 }
