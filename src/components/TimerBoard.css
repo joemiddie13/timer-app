@@ -9,7 +9,7 @@
 .timer-board-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 1.5rem;
 }
 
@@ -30,6 +30,33 @@
   margin-left: 0.5rem;
 }
 
+.timer-stats-bar {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.running-count {
+  display: flex;
+  align-items: center;
+}
+
+.running-count::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10b981;
+  margin-right: 6px;
+}
+
+.total-elapsed {
+  font-weight: 500;
+}
+
 .add-timer-btn {
   background-color: #3498db;
   color: white;
@@ -40,12 +67,24 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-timer-btn:hover {
+  background-color: #2980b9;
 }
 
 .empty-state {
   text-align: center;
   padding: 3rem 0;
   color: #94a3b8;
+}
+
+.timer-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
 }
 
 .timer-list {

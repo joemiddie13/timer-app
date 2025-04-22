@@ -1,0 +1,146 @@
+.timer-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1rem;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.timer-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
+}
+
+.timer-card.running {
+  border-left: 4px solid #10b981;
+}
+
+.timer-card.paused {
+  border-left: 4px solid #6b7280;
+}
+
+.timer-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.timer-card-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.timer-body {
+  padding: 1.5rem;
+}
+
+.time-display {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.status-indicator {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-bottom: 1.5rem;
+}
+
+.timer-card.running .status-indicator {
+  color: #10b981;
+}
+
+.timer-card.paused .status-indicator {
+  color: #6b7280;
+}
+
+.timer-notes {
+  background-color: #f8fafc;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+  color: #64748b;
+  font-style: italic;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.control-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.control-btn.pause {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.control-btn.pause:hover {
+  background-color: #d97706;
+}
+
+.control-btn.resume {
+  background-color: #10b981;
+  color: white;
+}
+
+.control-btn.resume:hover {
+  background-color: #059669;
+}
+
+.control-btn.reset {
+  background-color: #6b7280;
+  color: white;
+}
+
+.control-btn.reset:hover {
+  background-color: #4b5563;
+}
+
+.timer-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.delete-btn:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+} 

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addTimer } from "../features/timers/TimerSlice";
+import TimerCard from "./TimerCard";
 import "./TimerBoard.css";
 
 function TimerBoard() {
@@ -12,13 +13,49 @@ function TimerBoard() {
     dispatch(addTimer({ label }));
   };
 
-  // Calculate total timers for stretch challenge
+  // Calculate total timers and running timers for stretch challenge
   const totalTimers = timers.length;
+  const runningTimers = timers.filter(t => t.isRunning).length;
+  
+  // Calculate total elapsed time across all timers
+  const totalElapsedTime = useMemo(() => {
+    return timers.reduce((total, timer) => {
+      return total + timer.elapsed;
+    }, 0);
+  }, [timers]);
+  
+  // Format total elapsed time
+  const formatTotalTime = (ms) => {
+    const totalSeconds = Math.floor(ms / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    
+    if (hours > 0) {
+      return `${hours}h ${minutes}m ${seconds}s`;
+    } else if (minutes > 0) {
+      return `${minutes}m ${seconds}s`;
+    } else {
+      return `${seconds}s`;
+    }
+  };
 
   return (
     <div className="timer-board">
       <div className="timer-board-header">
-        <h2>All Timers <span className="timer-count">{totalTimers}</span></h2>
+        <div>
+          <h2>All Timers <span className="timer-count">{totalTimers}</span></h2>
+          {totalTimers > 0 && (
+            <div className="timer-stats-bar">
+              <span className="running-count">
+                {runningTimers} active
+              </span>
+              <span className="total-elapsed">
+                Total time: {formatTotalTime(totalElapsedTime)}
+              </span>
+            </div>
+          )}
+        </div>
         <button className="add-timer-btn" onClick={handleAddTimer}>Add Timer</button>
       </div>
       
@@ -27,21 +64,11 @@ function TimerBoard() {
           <p>No timers yet. Add your first timer to get started!</p>
         </div>
       ) : (
-        <ul className="timer-list">
+        <div className="timer-cards-container">
           {timers.map((timer) => (
-            <li key={timer.id} className={`timer-item ${timer.isRunning ? 'running' : 'paused'}`}>
-              <div className="timer-color" style={{ backgroundColor: timer.color }}></div>
-              <div className="timer-details">
-                <strong>{timer.label}</strong>
-                <div className="timer-stats">
-                  <span className="elapsed">Elapsed: {Math.floor(timer.elapsed / 1000)}s</span>
-                  <span className="status-badge">{timer.isRunning ? 'Running' : 'Paused'}</span>
-                </div>
-                {timer.notes && <div className="timer-notes">{timer.notes}</div>}
-              </div>
-            </li>
+            <TimerCard key={timer.id} timer={timer} />
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
