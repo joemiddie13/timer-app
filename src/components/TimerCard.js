@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { pauseTimer, resumeTimer, resetTimer, removeTimer } from "../features/timers/TimerSlice";
+import { formatTime } from "../utils/formatTime";
 import "./TimerCard.css";
 
 const TimerCard = ({ timer }) => {
@@ -40,28 +41,14 @@ const TimerCard = ({ timer }) => {
     setUpdateInterval(prev => prev === 1000 ? 100 : 1000);
   };
 
-  // Format time nicely with hours, minutes, seconds, and milliseconds
-  const formatTime = (ms) => {
-    const totalSeconds = Math.floor(ms / 1000);
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-    
-    // Use Intl.NumberFormat for proper zero-padding
-    const format = new Intl.NumberFormat('en-US', { minimumIntegerDigits: 2 });
-    
-    if (hours > 0) {
-      return `${hours}:${format.format(minutes)}:${format.format(seconds)}`;
-    } else {
-      return `${format.format(minutes)}:${format.format(seconds)}`;
-    }
-  };
-
   // Check if timer has been running for more than 5 minutes (300,000 ms)
   const isLongRunning = timer.isRunning && displayTime > 300000;
+  
+  // Check if timer has reached over an hour (stretch challenge for Part 7)
+  const isOverHour = displayTime >= 3600000;
 
   return (
-    <div className={`timer-card ${timer.isRunning ? 'running' : 'paused'} ${isLongRunning ? 'long-running' : ''}`}>
+    <div className={`timer-card ${timer.isRunning ? 'running' : 'paused'} ${isLongRunning ? 'long-running' : ''} ${isOverHour ? 'over-hour' : ''}`}>
       <div className="timer-card-header" style={{ borderColor: timer.color }}>
         <h3>{timer.label}</h3>
         <div className="timer-actions">
@@ -83,10 +70,20 @@ const TimerCard = ({ timer }) => {
       </div>
       
       <div className="timer-body">
-        <div className="time-display">{formatTime(displayTime)}</div>
+        <div 
+          className="time-display" 
+          title={`Raw time: ${displayTime}ms`} // Tooltip showing raw milliseconds (stretch challenge)
+        >
+          {formatTime(displayTime, { 
+            showHours: true,
+            showMilliseconds: false,
+            locale: navigator.language // Use browser's locale for internationalization (stretch challenge)
+          })}
+        </div>
         <div className="status-indicator">
           {timer.isRunning ? "Running" : "Paused"}
           {isLongRunning && <span className="long-running-indicator"> (Long running)</span>}
+          {isOverHour && <span className="over-hour-indicator"> (Over 1 hour)</span>}
         </div>
         
         {timer.notes && <div className="timer-notes">{timer.notes}</div>}

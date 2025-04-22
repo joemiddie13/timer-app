@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addTimer } from "../features/timers/TimerSlice";
 import TimerCard from "./TimerCard";
+import { formatTimeHuman } from "../utils/formatTime";
 import "./TimerBoard.css";
 
 function TimerBoard() {
@@ -45,22 +46,6 @@ function TimerBoard() {
     // Clean up interval on unmount
     return () => clearInterval(intervalId);
   }, [timers]); // Re-run when timers array changes
-  
-  // Format total elapsed time
-  const formatTotalTime = (ms) => {
-    const totalSeconds = Math.floor(ms / 1000);
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-    
-    if (hours > 0) {
-      return `${hours}h ${minutes}m ${seconds}s`;
-    } else if (minutes > 0) {
-      return `${minutes}m ${seconds}s`;
-    } else {
-      return `${seconds}s`;
-    }
-  };
 
   return (
     <div className="timer-board">
@@ -72,8 +57,8 @@ function TimerBoard() {
               <span className="running-count">
                 {runningTimers} active
               </span>
-              <span className="total-elapsed">
-                Total time: {formatTotalTime(totalElapsedTime)}
+              <span className="total-elapsed" title={`Raw time: ${totalElapsedTime}ms`}>
+                Total time: {formatTimeHuman(totalElapsedTime)}
               </span>
             </div>
           )}
