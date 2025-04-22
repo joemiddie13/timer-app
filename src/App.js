@@ -1,12 +1,13 @@
 import './App.css';
 import Header from './components/Header';
+import TimerBoard from './components/TimerBoard';
 
 function App() {
   return (
     <div className="app">
       <Header />
       <main className="app-content">
-        {/* Timer content will go here */}
+        <TimerBoard />
       </main>
     </div>
   );
